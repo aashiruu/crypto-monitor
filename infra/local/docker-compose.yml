@@ -14,6 +14,23 @@ services:
     ports:
       - "9092:9092"
       - "9644:9644"
+  processor:
+    image: crypto-processor:local
+    container_name: local-processor
+    restart: unless-stopped
+
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: redpanda:9092
+      RAW_TOPIC: tx.raw
+      ALERT_TOPIC: tx.alerts
+      HIGH_VALUE_THRESHOLD_WEI: "1000000000000000000"
+
+    depends_on:
+      - redpanda
+
+    ports:
+      - "9000:9000"
+
 
   postgres:
     image: postgres:15

@@ -1,0 +1,6 @@
+confluent-kafka
+fastapi
+uvicorn
+prometheus-client
+python-dotenv
+
