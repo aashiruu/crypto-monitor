@@ -1,4 +1,4 @@
-Paste exactly this README
+
 # Crypto Monitor — Cloud-Native Blockchain Transaction Monitoring System
 
 Crypto Monitor is a **cloud-native, production-oriented blockchain transaction monitoring system** designed to ingest on-chain data in real time, stream it through Kafka, persist checkpoints durably, and expose rich operational metrics.
@@ -7,18 +7,18 @@ The project focuses on **reliability, observability, and clean system design**, 
 
 ---
 
-## ✨ Key Features
+## Key Features
 
-- 🔗 **Real-time blockchain ingestion** (Ethereum mainnet via RPC)
-- 📦 **Kafka-based streaming** (Redpanda)
-- 💾 **Durable checkpointing** (PostgreSQL) — safe restarts
-- 📊 **Prometheus metrics** for observability
-- 🐳 **Fully containerized** (Docker + Docker Compose)
-- ⚙️ **Production-style configuration** using environment variables
+- **Real-time blockchain ingestion** (Ethereum mainnet via RPC)
+- **Kafka-based streaming** (Redpanda)
+- **Durable checkpointing** (PostgreSQL) — safe restarts
+- **Prometheus metrics** for observability
+- **Fully containerized** (Docker + Docker Compose)
+- **Production-style configuration** using environment variables
 
 ---
 
-## 🧠 System Architecture
+## System Architecture
 
 High-level data flow:
 
@@ -39,7 +39,7 @@ High-level data flow:
 
 ---
 
-## 🗺️ Architecture Diagram (Logical)
+## Architecture Diagram (Logical)
 
 
 
@@ -76,7 +76,7 @@ Grafana ──► Dashboards
 
 ---
 
-## 🚀 Running Locally
+##  Running Locally
 
 ### Prerequisites
 - Docker + Docker Compose
@@ -84,108 +84,91 @@ Grafana ──► Dashboards
 
 ---
 
-### 1️⃣ Configure environment variables
+### 1 Configure environment variables
 
 Create a `.env` file in `infra/local`:
 
 ```env
 RPC_URL=https://rpc.ankr.com/eth/YOUR_API_KEY
+```
 
 
-⚠️ Never commit secrets — .env is ignored by Git.
+### 2 Start the full system
 
-2️⃣ Start the full system
+```
 cd infra/local
 docker compose up -d
-
+```
 
 This brings up:
 
-Redpanda (Kafka)
+• Redpanda (Kafka)
 
-PostgreSQL
+• PostgreSQL
 
-Prometheus
+• Prometheus
 
-Grafana
+• Grafana
 
-Ingestor service
+• Ingestor service
 
-3️⃣ Verify services
+### 3 Verify services
 
 Health check
 
+```
 curl http://localhost:8000/healthz
-
+```
 
 Metrics
 
+```
 curl http://localhost:8000/metrics
-
+```
 
 Kafka stream
 
+```
 kafkacat -b localhost:9092 -C -t tx.raw -o beginning
+```
 
-📊 Metrics Exposed
+
+## Metrics Exposed
 
 The ingestor exposes Prometheus metrics such as:
 
-ingestor_blocks_processed_total
+• ingestor_blocks_processed_total
 
-ingestor_transactions_published_total
+• ingestor_transactions_published_total
 
-ingestor_last_block_seen
+• ingestor_last_block_seen
 
 These enable alerting and dashboards.
 
-🧱 Design Decisions
+## Design Decisions
 
-Kafka over direct processing
+• Kafka over direct processing
 Enables decoupling, buffering, and horizontal scaling.
 
-Checkpointing in Postgres
+• Checkpointing in Postgres
 Ensures exactly-once block processing semantics across restarts.
 
-Metrics-first design
+• Metrics-first design
 Observability is treated as a core feature, not an afterthought.
 
-Container-native
+• Container-native
 Everything runs the same locally and in production-like environments.
 
-🔮 Roadmap
+## Roadmap
 
-Planned extensions:
+• Planned extensions:
 
-Transaction processor & alerting engine
+• Transaction processor & alerting engine
 
-Prometheus alert rules
+• Prometheus alert rules
 
-Grafana dashboards
+• Grafana dashboards
 
-Kubernetes deployment
+• Kubernetes deployment
 
-Cloud-managed Kafka / Postgres
-
-👤 Author
-
-Built by Okikiola Ashiru
-Cloud & DevOps Engineer — Blockchain & Streaming Systems
-
-
-Save and exit.
-
----
-
-# STEP A2 — (OPTIONAL) VISUAL ARCHITECTURE DIAGRAM
-
-You don’t *need* this immediately, but it adds polish.
-
-
-::contentReference[oaicite:0]{index=0}
-
-
-### Recommended tools
-- **draw.io (diagrams.net)** — easiest
-- **Excalidraw** — clean + minimal
-- **Lucidchart** — if you have access
+• Cloud-managed Kafka / Postgres
