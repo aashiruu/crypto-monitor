@@ -36,3 +36,25 @@ services:
     ports:
       - "3000:3000"
 
+  ingestor:
+    image: crypto-ingestor:local
+    container_name: local-ingestor
+    restart: unless-stopped
+
+    environment:
+      RPC_URL: ${RPC_URL}
+      KAFKA_BOOTSTRAP_SERVERS: redpanda:9092
+
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: crypto_monitor
+      DB_USER: crypto
+      DB_PASSWORD: crypto
+
+    depends_on:
+      - redpanda
+      - postgres
+
+    ports:
+      - "8000:8000"
+
