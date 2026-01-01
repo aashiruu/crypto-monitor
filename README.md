@@ -1,4 +1,3 @@
-
 # Crypto Monitor — Cloud-Native Blockchain Transaction Monitoring System
 
 Crypto Monitor is a **cloud-native, production-oriented blockchain transaction monitoring system** designed to ingest on-chain data in real time, stream it through Kafka, persist checkpoints durably, and expose rich operational metrics.
