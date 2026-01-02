@@ -59,7 +59,7 @@ All components run locally using Docker Compose.
 ## Architecture Diagram (Logical)
 
 
-
+```
 ┌────────────┐
 │ Ethereum │
 │ Blockchain │
@@ -90,6 +90,7 @@ All components run locally using Docker Compose.
 Prometheus ──► /metrics
 Grafana ──► Dashboards
 
+```
 
 ---
 
