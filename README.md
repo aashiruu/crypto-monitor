@@ -16,25 +16,43 @@ The project focuses on **reliability, observability, and clean system design**, 
 - **Production-style configuration** using environment variables
 
 ---
+## Architecture Overview
 
-## System Architecture
+Crypto Monitor is a local, cloud-native blockchain transaction monitoring system built with an event-driven architecture.
 
-High-level data flow:
+**Data flow:**
 
-1. **Ingestor Service**
-   - Polls the Ethereum blockchain via RPC
-   - Extracts transactions block by block
-   - Publishes raw transaction events to Kafka (`tx.raw`)
-   - Persists last processed block to Postgres
+Ethereum RPC  
+→ Ingestor service  
+→ Redpanda (Kafka-compatible broker)  
+→ Processor service  
+→ Alerts + Metrics
 
-2. **Streaming Layer**
-   - Kafka (Redpanda) buffers and streams transaction events
-   - Decouples ingestion from downstream processing
+**Core components:**
 
-3. **State & Observability**
-   - PostgreSQL stores ingestion checkpoints
-   - Prometheus scrapes ingestor metrics
-   - Grafana visualizes system health and throughput
+- **Ingestor**
+  - Connects to an Ethereum RPC endpoint
+  - Streams blocks and transactions
+  - Publishes raw transaction events to Kafka
+  - Exposes Prometheus metrics
+
+- **Redpanda**
+  - Kafka-compatible message broker
+  - Handles transaction streaming between services
+
+- **Processor**
+  - Consumes transactions from Kafka
+  - Detects high-value transactions
+  - Emits alerts and exposes metrics
+
+- **Prometheus**
+  - Scrapes metrics from all services
+  - Evaluates alerting rules
+
+- **Grafana**
+  - Visualizes system and application metrics
+
+All components run locally using Docker Compose.
 
 ---
 
@@ -132,17 +150,73 @@ kafkacat -b localhost:9092 -C -t tx.raw -o beginning
 ```
 
 
-## Metrics Exposed
+## Observability & Monitoring
 
-The ingestor exposes Prometheus metrics such as:
+The system is fully observable using **Prometheus** and **Grafana**.
 
-• ingestor_blocks_processed_total
+### Metrics
 
-• ingestor_transactions_published_total
+Each service exposes Prometheus-compatible metrics:
 
-• ingestor_last_block_seen
+#### Ingestor Metrics
+- `ingestor_blocks_processed_total` – total Ethereum blocks processed
+- `ingestor_transactions_published_total` – transactions sent to Kafka
+- `ingestor_last_block_seen` – latest block number ingested
 
-These enable alerting and dashboards.
+#### Processor Metrics
+- `processor_transactions_consumed_total` – transactions consumed from Kafka
+- `processor_high_value_alerts_total` – number of high-value alerts generated
+- `processor_last_transaction_value_wei` – value of the most recent transaction
+
+Prometheus scrapes all metrics automatically and stores them for visualization and alerting.
+
+## Alerting
+
+Alerting is implemented using **Prometheus alert rules**.
+
+Current alerts include:
+- **IngestorDown** – triggers when the ingestor is unavailable
+- **ProcessorDown** – triggers when the processor is unavailable
+- **NoTransactionsProcessed** – triggers when no transactions are consumed for a defined period
+
+Alerts are evaluated continuously by Prometheus and can be routed to external systems (Slack, email, PagerDuty) if desired.
+
+## Access services
+
+Grafana: http://localhost:3000
+
+Prometheus: http://localhost:9090
+
+Ingestor metrics: http://localhost:9101/metrics
+
+Processor metrics: http://localhost:9102/metrics
+
+An Ethereum RPC URL must be provided via environment variable:
+
+```
+RPC_URL=https://your-ethereum-rpc-endpoint
+```
+
+
+---
+
+# ✅ 5️⃣ Screenshots Section (exact text)
+
+```md
+## Screenshots
+
+### Grafana Dashboard
+![Grafana Dashboard](docs/screenshots/grafana-dashboard.png)
+
+### Ingestor Metrics
+![Ingestor Metrics](docs/screenshots/ingestor-metrics.png)
+
+### Processor Metrics
+![Processor Metrics](docs/screenshots/processor-metrics.png)
+
+### Prometheus Targets
+![Prometheus Targets](docs/screenshots/prometheus-targets.png)
+
 
 ## Design Decisions
 
