@@ -202,7 +202,6 @@ RPC_URL=https://your-ethereum-rpc-endpoint
 
 # ✅ 5️⃣ Screenshots Section (exact text)
 
-```md
 ## Screenshots
 
 ### Grafana Dashboard
