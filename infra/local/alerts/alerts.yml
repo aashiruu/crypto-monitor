@@ -1,0 +1,34 @@
+groups:
+- name: crypto-monitor.rules
+  rules:
+
+  - alert: IngestorStalled
+    expr: |
+      increase(ingestor_blocks_processed_total[5m]) == 0
+    for: 3m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Ingestor has stopped processing blocks"
+      description: "No Ethereum blocks have been processed in the last 5 minutes."
+
+  - alert: ProcessorStalled
+    expr: |
+      increase(processor_transactions_consumed_total[5m]) == 0
+    for: 3m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Processor is not consuming transactions"
+      description: "No transactions have been consumed from Kafka in the last 5 minutes."
+
+  - alert: AlertPipelineSilent
+    expr: |
+      increase(processor_high_value_alerts_total[10m]) == 0
+    for: 5m
+    labels:
+      severity: info
+    annotations:
+      summary: "No alerts emitted"
+      description: "No high-value transaction alerts have been emitted in the last 10 minutes."
+

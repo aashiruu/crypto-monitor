@@ -1,0 +1,31 @@
+groups:
+- name: crypto-monitor-alerts
+  rules:
+
+  - alert: IngestorDown
+    expr: up{job="ingestor"} == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Ingestor service is down"
+      description: "Prometheus has not been able to scrape the ingestor for over 1 minute."
+
+  - alert: ProcessorDown
+    expr: up{job="processor"} == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Processor service is down"
+      description: "Prometheus has not been able to scrape the processor for over 1 minute."
+
+  - alert: NoTransactionsProcessed
+    expr: rate(transactions_consumed_total[5m]) == 0
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "No transactions processed"
+      description: "Processor is running but has not processed any transactions in the last 5 minutes."
+

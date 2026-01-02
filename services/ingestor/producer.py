@@ -6,20 +6,24 @@ from config import KAFKA_BOOTSTRAP_SERVERS, KAFKA_TOPIC
 def delivery_report(err, msg):
     if err is not None:
         print(f"Delivery failed: {err}")
+    else:
+        print(f"Delivered to {msg.topic()} [{msg.partition()}]")
 
 
 class KafkaProducer:
     def __init__(self):
-        self.producer = Producer({
-            "bootstrap.servers": KAFKA_BOOTSTRAP_SERVERS,
-            "acks": "all",
-            "linger.ms": 10,
-        })
+        self.producer = Producer(
+            {
+                "bootstrap.servers": KAFKA_BOOTSTRAP_SERVERS,
+                "acks": "all",
+                "linger.ms": 10,
+            }
+        )
 
     def send(self, event: dict):
         self.producer.produce(
             topic=KAFKA_TOPIC,
-            value=json.dumps(event),
+            value=json.dumps(event).encode("utf-8"),
             callback=delivery_report,
         )
         self.producer.poll(0)

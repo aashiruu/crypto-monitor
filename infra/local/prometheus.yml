@@ -2,11 +2,14 @@ global:
   scrape_interval: 5s
 
 scrape_configs:
-  - job_name: "services"
+  - job_name: "ingestor"
     static_configs:
-      - targets: ["host.docker.internal:8000"]
+      - targets: ["ingestor:9101"]
+
   - job_name: "processor"
     static_configs:
-      - targets: ["processor:9000"]
+      - targets: ["processor:9102"]
 
+rule_files:
+  - /etc/prometheus/alerts/alerts.yml
 

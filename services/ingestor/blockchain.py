@@ -1,7 +1,6 @@
+import time
 from web3 import Web3
 from config import RPC_URL
-import time
-
 
 class BlockchainClient:
     def __init__(self):
@@ -10,22 +9,37 @@ class BlockchainClient:
         self.connect()
 
     def connect(self):
-        self.w3 = Web3(Web3.HTTPProvider(self.rpc_url))
+        try:
+            if not self.rpc_url:
+                print("WARNING: RPC_URL not set")
+                self.w3 = None
+                return
 
-        if not self.w3.is_connected():
-            print("WARNING: Ethereum RPC not reachable, retrying...")
+            w3 = Web3(Web3.HTTPProvider(self.rpc_url))
+            if w3.is_connected():
+                self.w3 = w3
+            else:
+                print("WARNING: Ethereum RPC not reachable, retrying...")
+                self.w3 = None
+        except Exception as e:
+            print(f"ERROR connecting to RPC: {e}")
             self.w3 = None
 
     def ensure_connection(self):
         if self.w3 is None:
             self.connect()
-            time.sleep(5)
+            time.sleep(3)
 
     def latest_block(self) -> int:
-        self.ensure_connection()
-        return self.w3.eth.block_number
+        while True:
+            self.ensure_connection()
+            if self.w3 is not None:
+                return self.w3.eth.block_number
+            time.sleep(3)
 
     def get_block(self, block_number: int):
-        self.ensure_connection()
-        return self.w3.eth.get_block(block_number, full_transactions=True)
-
+        while True:
+            self.ensure_connection()
+            if self.w3 is not None:
+                return self.w3.eth.get_block(block_number, full_transactions=True)
+            time.sleep(3)

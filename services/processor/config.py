@@ -1,19 +1,25 @@
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
-
+# Kafka
 KAFKA_BOOTSTRAP_SERVERS = os.getenv(
-    "KAFKA_BOOTSTRAP_SERVERS", "localhost:9092"
+    "KAFKA_BOOTSTRAP_SERVERS",
+    "redpanda:9092"
 )
 
-RAW_TOPIC = os.getenv("RAW_TOPIC", "tx.raw")
-ALERT_TOPIC = os.getenv("ALERT_TOPIC", "tx.alerts")
+# Consume from this topic
+KAFKA_TOPIC = os.getenv(
+    "KAFKA_TOPIC",
+    "tx.raw"
+)
 
-SERVICE_NAME = "tx-processor"
+# Produce alerts to this topic
+ALERT_TOPIC = os.getenv(
+    "ALERT_TOPIC",
+    "tx.alerts"
+)
 
-# Detection rule (simple but realistic)
+# High-value transaction threshold (default: 1 ETH)
 HIGH_VALUE_THRESHOLD_WEI = int(
-    os.getenv("HIGH_VALUE_THRESHOLD_WEI", "1000000000000000000")
-)  # 1 ETH
+    os.getenv("HIGH_VALUE_THRESHOLD_WEI", str(10**18))
+)
 
