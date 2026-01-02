@@ -206,16 +206,16 @@ RPC_URL=https://your-ethereum-rpc-endpoint
 ## Screenshots
 
 ### Grafana Dashboard
-![Grafana Dashboard](docs/screenshots/grafana-dashboard.png)
+<img width="1366" height="652" alt="image" src="https://github.com/user-attachments/assets/32ff2285-4c3d-4c33-aa67-24e173a78ed6" />
 
 ### Ingestor Metrics
-![Ingestor Metrics](docs/screenshots/ingestor-metrics.png)
+<img width="558" height="265" alt="image" src="https://github.com/user-attachments/assets/a8f36797-4306-4c3e-a6d8-f96ac23cf6b4" />
 
 ### Processor Metrics
-![Processor Metrics](docs/screenshots/processor-metrics.png)
+<img width="558" height="269" alt="image" src="https://github.com/user-attachments/assets/36017bf3-524b-4572-adf4-7542f913ad62" />
 
 ### Prometheus Targets
-![Prometheus Targets](docs/screenshots/prometheus-targets.png)
+<img width="1366" height="687" alt="image" src="https://github.com/user-attachments/assets/0aed23c7-768c-4b30-a91e-886d1f637e56" />
 
 
 ## Design Decisions
