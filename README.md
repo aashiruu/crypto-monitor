@@ -206,16 +206,16 @@ RPC_URL=https://your-ethereum-rpc-endpoint
 ## Screenshots
 
 ### Grafana Dashboard
-<img width="1366" height="652" alt="image" src="https://github.com/user-attachments/assets/32ff2285-4c3d-4c33-aa67-24e173a78ed6" />
+<img width="1366" height="652" alt="image" src="https://github.com/user-attachments/assets/00cba621-ea30-424a-b73c-3b3aa287f970" />
 
 ### Ingestor Metrics
-<img width="558" height="265" alt="image" src="https://github.com/user-attachments/assets/a8f36797-4306-4c3e-a6d8-f96ac23cf6b4" />
+<img width="558" height="265" alt="image" src="https://github.com/user-attachments/assets/1f97a6ea-66f3-4ba9-bcff-088fc71c7341" />
 
 ### Processor Metrics
-<img width="558" height="269" alt="image" src="https://github.com/user-attachments/assets/36017bf3-524b-4572-adf4-7542f913ad62" />
+<img width="558" height="269" alt="image" src="https://github.com/user-attachments/assets/5fc32c44-524b-4b42-98cf-74add3f6734b" />
 
 ### Prometheus Targets
-<img width="1366" height="687" alt="image" src="https://github.com/user-attachments/assets/0aed23c7-768c-4b30-a91e-886d1f637e56" />
+<img width="1366" height="687" alt="image" src="https://github.com/user-attachments/assets/3b00da21-681f-4592-9a22-64ae82fa896d" />
 
 
 ## Design Decisions
