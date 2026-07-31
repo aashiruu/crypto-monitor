@@ -59,37 +59,18 @@ All components run locally using Docker Compose.
 ## Architecture Diagram (Logical)
 
 
-```
-┌────────────┐
-│ Ethereum │
-│ Blockchain │
-└─────┬──────┘
-│ RPC
-▼
-┌──────────────┐
-│ Ingestor │
-│ (FastAPI) │
-│ │
-│ - Block poll │
-│ - Tx extract │
-│ - Metrics │
-└─────┬────────┘
-│ Kafka (tx.raw)
-▼
-┌──────────────┐
-│ Redpanda │
-│ (Kafka API) │
-└──────────────┘
-▲
-│ checkpoint
-┌─────┴────────┐
-│ PostgreSQL │
-│ (state) │
-└──────────────┘
+```mermaid
+flowchart TD
+    A[Ethereum Blockchain] -->|RPC| B["Ingestor (FastAPI)<br/>- Block poll<br/>- Tx extract<br/>- Metrics"]
+    B -->|Kafka: tx.raw| C[Redpanda<br/>Kafka API]
+    C -->|checkpoint| D[(PostgreSQL<br/>state)]
+    B -.->|/metrics| E[Prometheus]
+    E -->|dashboards| F[Grafana]
 
-Prometheus ──► /metrics
-Grafana ──► Dashboards
-
+    style A fill:#f5f5f5,stroke:#333
+    style D fill:#4169E1,color:#fff
+    style E fill:#E6522C,color:#fff
+    style F fill:#F46800,color:#fff
 ```
 
 ---
